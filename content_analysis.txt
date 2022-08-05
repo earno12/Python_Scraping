@@ -1,0 +1,14 @@
+CONCEPT FOR CONTENT ANALYSIS PROGRAM
+====================================
+Requirements:
+1. Needs to be able to read a txt file (optional - pdf, xlsx)
+2. Needs to be able to create a key map (or table of values)
+3. Needs to be able to count the instances of unique words that are found
+4. Needs to be able to output the results to the console or in a specified format
+  (i.e. U.S.: 49)
+
+Inputs:
+1. Text file (the output from the python scraper app)
+
+Outputs:
+2. File (containing the formatted data - all unique words and their count)
