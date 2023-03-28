@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/Users/eli/Desktop/codeplatoon/Python_Scraping/venv/bin/python3.11
 # -*- coding: utf-8 -*-
 import re
 import sys
