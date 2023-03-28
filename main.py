@@ -18,13 +18,13 @@ headers = {
 # the World news URL for Google News
 URL = "https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB?hl=en-US&gl=US&ceid=US%3Aen"
 
+output_filename = input("Enter a filename for your results: ")
+
 page = requests.get(URL).text # gets the source of the URL and renders as text
 
 soup = BeautifulSoup(page, "html.parser") # passes text to BeautifulSoup
 
 results = soup.find_all("h4") # finds all h4 HTML tags
-
-output_filename = input("Enter a filename for your results: ")
 
 # opens a new text file with the user chosen name in write mode
 # builds an array of the h4 tags
