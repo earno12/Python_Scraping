@@ -1,4 +1,13 @@
-import requests; from bs4 import BeautifulSoup
+import re
+import requests
+from bs4 import BeautifulSoup
+import string
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import wordnet
+nltk.download('wordnet')
+nltk.download('stopwords')
 
 # This will be a News Headline scraper for Google News
 # This program only requires requests and BeautifulSoup to achieve its current purpose.
@@ -35,3 +44,49 @@ with open(f"{output_filename}.txt", "w") as external_file:
     for result in results:
         print(result.text.strip(), file=external_file)
     external_file.close()
+
+def count_unique_words(output_filename):
+    with open(f"{output_filename}.txt", 'r') as file:
+        text = file.read()
+        words = text.split()
+
+        # Get the NLTK stopword list
+        stop_words = set(stopwords.words('english'))
+
+        # Create a WordNetLemmatizer object
+        lemmatizer = WordNetLemmatizer()
+
+        word_counts = {}
+        for word in words:
+            word = word.lower()
+            # Remove all punctuation characters from the word
+            word = "".join([char for char in word if char not in string.punctuation])
+            palestinian_regex = re.compile(r'palestini.*')
+            canadian_regex = re.compile(r'canadi.*')
+            if len(word) > 4 and word not in stop_words:
+                if word == "russian":
+                    word = "russia"
+                elif palestinian_regex.match(word):
+                    word = "palestine"
+                elif word == "ukrainian":
+                    word = "ukraine"
+                elif word == "israeli":
+                    word = "israel"
+                elif canadian_regex.match(word):
+                    word = "canada"
+                else:
+                    # Lemmatize the word using WordNetLemmatizer algorithm
+                    pos = wordnet.synsets(word)[0].pos() if wordnet.synsets(word) else 'v'
+                    word = lemmatizer.lemmatize(word, pos=pos)
+                if word in word_counts:
+                    word_counts[word] += 1
+                else:
+                    word_counts[word] = 1
+        with open("word_count.txt", "w") as word_count_file:
+            sorted_counts = sorted(word_counts.items(), key=lambda x: x[1], reverse=True)
+            for word, count in sorted_counts:
+                if count > 6:
+                    print(f"{word}: {count}", file=word_count_file)
+            word_count_file.close()
+
+count_unique_words(output_filename)
